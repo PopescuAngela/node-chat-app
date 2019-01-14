@@ -13,9 +13,23 @@ app.use(express.static(publicPath));
 
 io.on('connection', (socket)=>{
     console.log('New user connected');
+    
+    //send from server to client
+    socket.emit('newMessage', {
+        from : 'angela',
+        text: 'How are you? ',
+        createdAt: new Date().getUTCDate()
+    });
+
+    // listen
+    socket.on('createMessage', (newMessage)=>{
+        console.log('createMessage', newMessage);
+    });
+
     socket.on('disconnect', (socket)=>{
         console.log('The user disconnected');
     });
+    
 });
 
 var port = process.env.PORT || 3000;
