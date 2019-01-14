@@ -10,7 +10,7 @@ describe (' generateMessage', ()=>{
         var generatedMessageObj = generateMessage(from,message);
         expect(generatedMessageObj.from).toBe(from);
         expect(generatedMessageObj.text).toBe(message);
-        expect(generatedMessageObj.createdAt).toBeA('number');
+        expect(generatedMessageObj.createdAt).toBeA('string');
     })
 });
 
@@ -23,6 +23,6 @@ describe (' generateLocationMessage', ()=>{
         var generatedMessageObj = generateLocationMessage(from, lat, long);
         expect(generatedMessageObj.from).toBe(from);
         expect(generatedMessageObj.url).toBe(`https://www.google.com/maps?q=${lat},${long}`);
-        expect(generatedMessageObj.createdAt).toBeA('number');
+        expect(generatedMessageObj.createdAt).toBeA('string');
     })
 });
