@@ -1,6 +1,24 @@
   // initiate the request and keep the connection open
   var socket = io();
 
+  function scrollToBottom()  {
+    //selectors
+    var messages = jQuery('#messages');
+    var newMessage = messages.children('li:last-child');
+    //heights
+    var clientHeight = messages.prop('clientHeight');
+    var scrollTop = messages.prop('scrollTop');
+    var scrollHeight = messages.prop('scrollHeight');
+    var newMessageHeight = newMessage.innerHeight();
+    var lastMessageHeight = newMessage.prev().innerHeight();
+
+    if(scrollTop + clientHeight + newMessageHeight + lastMessageHeight >= scrollHeight){
+      //scroll to bottom
+      console.log('Should scroll');
+      messages.scrollTop(scrollHeight);
+    }
+  }
+
   socket.on('connect',function () {
       console.log('Connected to server!');
 
@@ -16,11 +34,7 @@
 
   
   socket.on('newMessage', function (message) {
-      // console.log('New message received!', message); 
-      // var li = jQuery('<li></li>');
-      // li.text(`${message.from}: ${message.text}; ${message.createdAt}`);
-
-      // jQuery('#messages').append(li);
+      console.log('New message received!', message); 
 
       var template = jQuery('#message-template').html();
       var html = Mustache.render(template, {
@@ -30,7 +44,9 @@
       });
 
       jQuery('#messages').append(html);
+      scrollToBottom();
   });
+
 
   jQuery('#message-form').on('submit', function(e){
     e.preventDefault();
@@ -43,6 +59,7 @@
     });
 
   });
+
 
   var locationButton = jQuery('#send-location');
   locationButton.on('click', function() {
@@ -67,14 +84,6 @@
   // send new location message throw socket
   socket.on('newLocationMessage', function (message) {
     console.log('New location message received!', message); 
-//     var li = jQuery('<li></li>');
-//     var a = jQuery('<a target="_blank">My current location is</a>')
-
-//     li.text(`${message.from}: ${message.createdAt}`);
-//     a.attr('href', message.url);
-//     li.append(a);
-
-//     jQuery('#messages').append(li);
 
     var template = jQuery('#location-message-template').html();
     var html = Mustache.render(template, {
@@ -84,4 +93,5 @@
     });
 
     jQuery('#messages').append(html);
+    scrollToBottom();
 });
