@@ -16,11 +16,20 @@
 
   
   socket.on('newMessage', function (message) {
-      console.log('New message received!', message); 
-      var li = jQuery('<li></li>');
-      li.text(`${message.from}: ${message.text}; ${message.createdAt}`);
+      // console.log('New message received!', message); 
+      // var li = jQuery('<li></li>');
+      // li.text(`${message.from}: ${message.text}; ${message.createdAt}`);
 
-      jQuery('#messages').append(li);
+      // jQuery('#messages').append(li);
+
+      var template = jQuery('#message-template').html();
+      var html = Mustache.render(template, {
+        from:message.from,
+        text:message.text,
+        createdAt:message.createdAt
+      });
+
+      jQuery('#messages').append(html);
   });
 
   jQuery('#message-form').on('submit', function(e){
@@ -55,14 +64,24 @@
     });
   });
 
+  // send new location message throw socket
   socket.on('newLocationMessage', function (message) {
     console.log('New location message received!', message); 
-    var li = jQuery('<li></li>');
-    var a = jQuery('<a target="_blank">My current location is</a>')
+//     var li = jQuery('<li></li>');
+//     var a = jQuery('<a target="_blank">My current location is</a>')
 
-    li.text(`${message.from}: ${message.createdAt}`);
-    a.attr('href', message.url);
-    li.append(a);
+//     li.text(`${message.from}: ${message.createdAt}`);
+//     a.attr('href', message.url);
+//     li.append(a);
 
-    jQuery('#messages').append(li);
+//     jQuery('#messages').append(li);
+
+    var template = jQuery('#location-message-template').html();
+    var html = Mustache.render(template, {
+      from:message.from,
+      url:message.url,
+      createdAt:message.createdAt
+    });
+
+    jQuery('#messages').append(html);
 });
