@@ -15,11 +15,18 @@ io.on('connection', (socket)=>{
     console.log('New user connected');
     
     // //send from server to client
-    // socket.emit('newMessage', {
-    //     from : 'angela',
-    //     text: 'How are you? ',
-    //     createdAt: new Date().getUTCDate()
-    // });
+    socket.emit('newMessage', {
+        from : 'Admin',
+        text: 'Welcome to the chat',
+        createdAt: new Date().getTime()
+    });
+
+    // send a message to everybody expect the current user
+    socket.broadcast.emit('newMessage', {
+            from: 'Admin',
+            text: 'New user joined',
+            createdAt: new Date().getTime()
+        });
 
     // listen
     socket.on('createMessage', (newMessage) => {
@@ -30,6 +37,13 @@ io.on('connection', (socket)=>{
             text: newMessage.text,
             createdAt: new Date().getTime()
         });
+
+        //send a message to everybody expect the current user
+        // socket.broadcast.emit('newMessage', {
+        //     from: newMessage.from,
+        //     text: newMessage.text,
+        //     createdAt: new Date().getTime()
+        // });
     });1
 
     socket.on('disconnect', (socket)=>{
