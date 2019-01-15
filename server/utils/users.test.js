@@ -53,7 +53,7 @@ describe('Users', () => {
   it('should find user', () => {
     var userId = '2';
     var user = users.getUser(userId);
-
+  
     expect(user.id).toBe(userId);
   });
 
@@ -71,8 +71,20 @@ describe('Users', () => {
   });
 
   it('should return names for react course', () => {
-    var userList = users.getUserList('React Course');
+    var userList = users.getUserList('ReacT Course');
 
     expect(userList).toEqual(['Jen']);
+  });
+
+  it('Should get user by name', ()=>{
+    var user = users.getUserByName('Mike');
+
+    expect(user.room).toEqual('Node Course');
+  });
+
+  it('Should get all existing rooms', ()=>{
+    var exsitingNames = users.getExistingRooms();
+
+    expect(exsitingNames.length).toBe(2);
   });
 });

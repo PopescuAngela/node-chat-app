@@ -111,3 +111,14 @@
     jQuery('#messages').append(html);
     scrollToBottom();
 });
+
+socket.on('existingRooms', function(existingRooms) {
+  console.log('Existing rooms', existingRooms);
+
+  var ol = jQuery('<ol></ol>');
+  existingRooms.forEach(function (room) {
+    ol.append(jQuery('<li></li>').text(room));
+  });
+
+  jQuery('#rooms').html(ol);
+});
